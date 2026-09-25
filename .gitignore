@@ -1,6 +1,7 @@
-# Byte-compiled / cache
+# Python
 __pycache__/
 *.py[cod]
+*$py.class
 
 # Environments
 .venv/
@@ -10,9 +11,13 @@ env/
 # Jupyter
 .ipynb_checkpoints/
 
+# Streamlit
+.streamlit/secrets.toml
+
 # Editors / OS
 .vscode/
 .idea/
+*.code-workspace
 .DS_Store
 Thumbs.db
 

@@ -105,6 +105,47 @@ print("spam" if prediction == 1 else "ham")
 
 Both files are committed, so no training run is needed to use the model.
 
+## Web app
+
+A [Streamlit](https://streamlit.io) front end is included:
+
+```bash
+streamlit run app.py
+```
+
+Then open http://localhost:8501, paste a message, and press **Predict**.
+
+| File | Purpose |
+| --- | --- |
+| `app.py` | Streamlit front end |
+| `preprocessing.py` | The `transform_text` pipeline, importable and tested |
+| `tests/test_spam_classifier.py` | Preprocessing and artefact tests |
+| `tests/test_streamlit_app.py` | End-to-end tests that run the real app |
+
+`preprocessing.py` is shared by the app and the tests, so the two cannot drift
+apart. The tests confirm it produces byte-identical output to the original
+notebook implementation, which matters: a change here silently changes every
+prediction.
+
+The app is tested with Streamlit's own `AppTest` harness, which executes the
+real script and inspects the rendered output. Serving HTTP 200 is not enough —
+that only proves the bootstrap page loaded.
+
+## Docker
+
+```bash
+docker build -t spam-classifier .
+docker run --rm -p 8501:8501 spam-classifier
+```
+
+Then open http://localhost:8501.
+
+## Continuous integration
+
+The GitHub Actions workflow runs the full test suite on every push, so a
+regression in the preprocessing or a pickle that stops loading fails the build
+rather than reaching a user.
+
 ## Known limitations
 
 - **Pickles are version-sensitive.** `model.pkl` and `vectorizer.pkl` were
@@ -137,6 +178,9 @@ Both files are committed, so no training run is needed to use the model.
 | `spam.csv` | UCI SMS Spam Collection |
 | `model.pkl` | Trained `MultinomialNB` classifier |
 | `vectorizer.pkl` | Fitted `TfidfVectorizer` |
+| `app.py` | Streamlit web app |
+| `preprocessing.py` | Shared text preprocessing |
+| `tests/` | 33 tests, including end-to-end app tests |
 
 ## License
 

@@ -10,8 +10,14 @@ xgboost==3.2.0
 # Text processing
 nltk==3.10.3
 
+# Streamlit web app
+streamlit==1.64.0
+
 # Visualisation
 matplotlib==3.11.2
 seaborn==0.13.2
 wordcloud==1.9.6
 pillow==11.3.0
+
+# Tests
+pytest==9.1.1
