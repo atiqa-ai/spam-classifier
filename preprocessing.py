@@ -15,13 +15,6 @@ import nltk
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 
-# Built once at import time. The original code called stopwords.words('english')
-# inside the per-token loop, which rebuilt the whole stopword list for every
-# single word of every message.
-STOPWORDS = frozenset(stopwords.words("english"))
-PUNCTUATION = frozenset(string.punctuation)
-STEMMER = PorterStemmer()
-
 _NLTK_DATA = (("corpora/stopwords", "stopwords"), ("tokenizers/punkt_tab", "punkt_tab"))
 
 
@@ -32,6 +25,29 @@ def ensure_nltk_data() -> None:
             nltk.data.find(path)
         except LookupError:
             nltk.download(package, quiet=True)
+
+
+def _load_stopwords() -> frozenset:
+    """Load the English stopword list, downloading it if it is absent.
+
+    This runs at import time, which means a fresh container or CI runner that
+    has never used NLTK before would crash on ``import preprocessing`` with a
+    LookupError. Downloading on demand makes the module importable anywhere
+    without every caller having to remember to prime NLTK first.
+    """
+    try:
+        return frozenset(stopwords.words("english"))
+    except LookupError:
+        nltk.download("stopwords", quiet=True)
+        return frozenset(stopwords.words("english"))
+
+
+# Built once at import time. The original code called stopwords.words('english')
+# inside the per-token loop, which rebuilt the whole stopword list for every
+# single word of every message.
+STOPWORDS = _load_stopwords()
+PUNCTUATION = frozenset(string.punctuation)
+STEMMER = PorterStemmer()
 
 
 def transform_text(text: str) -> str:

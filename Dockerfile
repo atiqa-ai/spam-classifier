@@ -18,10 +18,13 @@ WORKDIR /app
 COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
 COPY --from=builder /usr/local/bin /usr/local/bin
 
+# Bake the NLTK corpora into the image so the app never needs network at runtime.
+RUN python -c "import nltk; nltk.download('stopwords', quiet=True); nltk.download('punkt_tab', quiet=True)"
+
 COPY . .
 
 # Fail fast if the committed model artefacts cannot be loaded.
-RUN python -c "import app; app.load_artifacts(__import__('pathlib').Path('/app')); print('artefacts load OK')"
+RUN python -c "import app, pathlib; app.load_artifacts(pathlib.Path('/app')); print('artefacts load OK')"
 
 EXPOSE 8501
 
