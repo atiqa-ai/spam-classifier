@@ -1,0 +1,17 @@
+# NOTE: model.pkl and vectorizer.pkl were produced with these exact versions.
+# Pickles are version-sensitive; if loading fails, re-run the notebook to
+# regenerate them.
+numpy==2.4.6
+pandas==3.0.6
+scikit-learn==1.9.1
+scipy==1.17.1
+xgboost==3.2.0
+
+# Text processing
+nltk==3.10.3
+
+# Visualisation
+matplotlib==3.11.2
+seaborn==0.13.2
+wordcloud==1.9.6
+pillow==11.3.0
