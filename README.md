@@ -59,7 +59,7 @@ token stops the model from treating them as three unrelated words.
 Python 3.9+ and Jupyter. The dataset is already included, so no download is needed.
 
 ```bash
-git clone https://github.com/<your-username>/spam-classifier.git
+git clone https://github.com/atiqa-ai/spam-classifier.git
 cd spam-classifier
 
 python -m venv .venv
@@ -182,7 +182,4 @@ rather than reaching a user.
 | `preprocessing.py` | Shared text preprocessing |
 | `tests/` | 33 tests, including end-to-end app tests |
 
-## License
 
-MIT. The dataset belongs to the UCI Machine Learning Repository and is
-distributed for research and educational use.
